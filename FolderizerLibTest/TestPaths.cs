@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace FolderizerLibTest.Configuration
+namespace FolderizerLibTest
 {
     /// <summary>
     /// This struct provides valid and invalid directory paths for the execution of unit tests.
@@ -19,18 +19,32 @@ namespace FolderizerLibTest.Configuration
          *  Feel free to change the whole root directory path or choose a more proper location by setting other
          *  Environment.SpecialFolder enum value.
          */
-        private static string _initialPath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
-        private static string _rootPath = Path.Combine(_initialPath, "FolderizerLibTest"); // FolderizerLibTest will be created in MyMusic.
+        private static string __baseDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+        private static string _testFolderPath = Path.Combine(__baseDirectory, "FolderizerLibTest"); // FolderizerLibTest folder will be created in MyMusic.
 
         /* There's no need to modify the following paths */
-        private static string _validBasePath   = Path.Combine(_rootPath, "Folderizer [Valid Base Path]");
-        private static string _validOutputPath = Path.Combine(_rootPath, "Folderizer [Valid Output Path]");
-        private static string _inexistentDirectoryPath = Path.Combine(_rootPath, "InvalidBasePath - This will never exist");
+        private static string _validBasePath   = Path.Combine(_testFolderPath, "Folderizer-Valid-Base-Path");
+        private static string _validmountingPath = Path.Combine(_testFolderPath, "Folderizer-Valid-Mounting-Path");
+        private static string _inexistentDirectoryPath = Path.Combine(_testFolderPath, "Invalid-Base-Path");
+
         /// <summary>
-        /// <para>Provides the path of an existent directory, which is defined in this property's respective field.</para>
-        /// <para>Before returning the value,
-        /// this property's getter creates the directory pointed in it's respective private field, 
-        /// if it doesn't exist yet.</para>
+        /// <para>Provides the path of the root test folder, where files can be put to test the library. These files will be copied to the BasePath folder at runtime.</para>
+        /// <para>See: <see cref="ValidBasePath"/></para>
+        /// <para>By default, RootTestFolderPath points to: <c>MyMusic/FolderizerLibTest</c></para>
+        /// </summary>
+        public static string RootTestFolderPath
+        {
+            get
+            {
+                Directory.CreateDirectory(_testFolderPath);
+                return _testFolderPath;
+            }
+        }
+        /// <summary>
+        /// <para>Provides the path of an existing directory, set in this property's private field.</para>
+        /// <para>In runtime, the getter creates the directory pointed in it's respective private field, 
+        /// if it doesn't exist</para>
+        /// <para>By default: <c>MyMusic/FolderizerLibTest/Folderizer-Valid-Base-Path</c></para>
         /// </summary>
         public static string ValidBasePath
         {
@@ -42,17 +56,17 @@ namespace FolderizerLibTest.Configuration
         }
 
         /// <summary>
-        /// <para>Provides the path of an existent directory, which is defined in this property's respective field.</para>
-        /// <para>Before returning the value,
-        /// this property's getter creates the directory pointed in it's respective private field, 
-        /// if it doesn't exist yet.</para>
+        /// <para>Provides the path of an existing directory, set in this property's private field.</para>
+        /// <para>In runtime, the getter creates the directory pointed in it's respective private field, 
+        /// if it doesn't exist.</para>
+        /// <para>By default: </para>
         /// </summary>
-        public static string ValidOutputPath
+        public static string ValidMountingPath
         {
             get
             {
-                Directory.CreateDirectory(_validOutputPath);
-                return _validOutputPath;
+                Directory.CreateDirectory(_validmountingPath);
+                return _validmountingPath;
             }
         }
 
